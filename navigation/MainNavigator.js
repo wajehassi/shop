@@ -11,9 +11,10 @@ import AdminNavigator from "./AdminNavigator";
 import AuthNavigator from "./AuthNavigator";
 import ShopDrawerNavigator from "./ShopDrawerNavigator";
 import { createStackNavigator } from "@react-navigation/stack";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, NavigationActions } from "@react-navigation/native";
 import Colors from "../constants/Colors";
 import * as authActions from "../store/actions/auth";
+
 
 const Stack = createStackNavigator();
 const RootNavigator = props => {
@@ -21,7 +22,9 @@ const RootNavigator = props => {
   const [auth, setAuth] = React.useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
+  useEffect(async (props) => {
+    console.log(props);
+
     const tryLogin = async () => {
       setIsLoading(true);
       const userData = await AsyncStorage.getItem("userData");
@@ -29,26 +32,29 @@ const RootNavigator = props => {
 
       if (!userData) {
         setAuth(false);
-          props.navigation.navigate("Auth");
       } else {
         setAuth(true);
-      }
-      const transformedData = JSON.parse(userData);
-      const { token, userId, expiryDate } = transformedData;
-      const expirationDate = new Date(expiryDate);
+        const transformedData = JSON.parse(userData);
+        const { token, userId, expiryDate } = transformedData;
+        const expirationDate = new Date(expiryDate);
 
-      if (expirationDate <= new Date() || !token || !userId) {
-        setAuth(false);
-                props.navigation.navigate("Auth");
-      } else {
-        setAuth(true);
+        if (expirationDate <= new Date() || !token || !userId) {
+          setAuth(false);
+          props.navigation.navigate("Auth");
+        } else {
+          setAuth(true);
           props.navigation.navigate("Shop");
+        }
+        const expirationTime = expirationDate.getTime() - new Date().getTime();
+        dispatch(authActions.authenticate(userId, token, expirationTime));
       }
-      const expirationTime = expirationDate.getTime() - new Date().getTime();
-      dispatch(authActions.authenticate(userId, token, expirationTime));
+
     };
-    tryLogin();
+    
+    await tryLogin();
   }, [dispatch]);
+
+
 
   if (isLoading) {
     return (

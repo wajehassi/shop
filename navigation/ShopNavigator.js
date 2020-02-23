@@ -31,7 +31,7 @@ import AuthScreen from "../screens/user/AuthScreen";
 import StartupScreen from "../screens/StartupScreen";
 import Colors from "../constants/Colors";
 import * as authActions from "../store/actions/auth";
-import { navigationRef } from './NavigationContainer';
+import { navigationRef } from './NavigationContainer2';
 
 const defaultNavOptions = {
   headerStyle: {

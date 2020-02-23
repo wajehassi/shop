@@ -11,7 +11,7 @@ import ordersReducer from './store/reducers/orders';
 import authReducer from './store/reducers/auth';
 import profileReducer from './store/reducers/profile';
 
-import NavigationContainer from './navigation/NavigationContainer';
+import RootNavigator from './navigation/NavigationContainer2';
 // import { NavigationContainer } from '@react-navigation/native';
 
 const rootReducer = combineReducers({
@@ -46,7 +46,7 @@ export default function App() {
   }
   return (
     <Provider store={store}>
-      <NavigationContainer />
+      <RootNavigator />
     </Provider>
   );
 }

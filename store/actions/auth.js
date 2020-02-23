@@ -10,6 +10,7 @@ let timer;
 export const authenticate = (userId, token, expiryTime) => {
   return dispatch => {
     dispatch(setLogoutTimer(expiryTime));
+    console.log('authenticate+++');
     dispatch({ type: AUTHENTICATE, userId: userId, token: token });
   };
 };
@@ -33,6 +34,7 @@ export const signup = (email, password) => {
         })
       }
     );
+    
 
     if (!response.ok) {
       const errorResData = await response.json();

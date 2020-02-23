@@ -49,8 +49,8 @@ const AuthScreen = props => {
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
-      email: '',
-      password: ''
+      email: 'info2@optimal.ps',
+      password: '123123123'
     },
     inputValidities: {
       email: false,
@@ -82,7 +82,7 @@ const AuthScreen = props => {
     setIsLoading(true);
     try {
       await dispatch(action);
-    //  props.navigation.navigate('Shop');
+      //props.navigation.navigate('Shop');
     } catch (err) {
       setError(err.message);
       setIsLoading(false);
@@ -119,7 +119,7 @@ const AuthScreen = props => {
               autoCapitalize="none"
               errorText="Please enter a valid email address."
               onInputChange={inputChangeHandler}
-              initialValue=""
+              initialValue="info2@optimal.ps"
             />
             <Input
               id="password"
@@ -131,7 +131,7 @@ const AuthScreen = props => {
               autoCapitalize="none"
               errorText="Please enter a valid password."
               onInputChange={inputChangeHandler}
-              initialValue=""
+              initialValue="123123123"
             />
             <View style={styles.buttonContainer}>
               {isLoading ? (
