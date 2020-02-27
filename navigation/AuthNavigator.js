@@ -20,10 +20,12 @@ const Stack = createStackNavigator();
 
 function AuthNavigator(): React.ReactElement {
   return (
-    <Stack.Navigator
-      screenOptions={defaultNavOptions}
-    >
-      <Stack.Screen name="Auth" component={AuthScreen} />
+    <Stack.Navigator screenOptions={defaultNavOptions}>
+      <Stack.Screen
+        name="Auth"
+        component={AuthScreen}
+        options={{ headerTitle: "Authenticate" }}
+      />
     </Stack.Navigator>
   );
 }

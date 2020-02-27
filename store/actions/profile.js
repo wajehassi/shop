@@ -1,13 +1,19 @@
 // import Order from '../../models/order';
 
 export const SET_USER = 'SET_USER';
+const BaseURL = 'http://demo10.optimal.ps/ecom/api' ;
 
 export const fetchUser = () => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
+        console.log('token is');
+
+
+    console.log(token);
+
     try {
       const response = await fetch(
-        `http://demo10.optimal.ps/ecom/api/auth/user` ,
+        BaseURL+`/auth/user` ,
         {
         method: 'GET',
         headers: {
@@ -16,7 +22,7 @@ export const fetchUser = () => {
         }
         }
       );
-// console.log(token);
+console.log(token);
       if (!response.ok) {
         throw new Error('Something went wrong!');
       }

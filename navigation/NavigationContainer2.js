@@ -1,72 +1,48 @@
 import React, { useEffect, useRef, useState, NativeModules } from "react";
-import { useSelector } from "react-redux";
-// import { NavigationActions } from 'react-navigation';
+import { useSelector,useDispatch } from "react-redux";
 import { CommonActions } from "@react-navigation/native";
-import {
-  View,
-  ActivityIndicator,
-  StyleSheet,
-  AsyncStorage
-} from "react-native";
-import { useDispatch } from "react-redux";
-
+import { AsyncStorage } from "react-native";
+import * as authActions from "../store/actions/auth";
 import { localize } from "../internationalization";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 import StartupScreen from "../screens/StartupScreen";
 import RootNavigator from "./MainNavigator";
-export const navigationRef = React.createRef();
-import { NavigationContainer, NavigationActions } from "@react-navigation/native";
-
-
+import { NavigationContainer } from "@react-navigation/native";
 import AuthNavigator from "./AuthNavigator";
 import ShopDrawerNavigator from "./ShopDrawerNavigator";
 import { createStackNavigator } from "@react-navigation/stack";
 
-
 const Stack = createStackNavigator();
 
 const NavigationContainer2 = props => {
-
+  const dispatch = useDispatch();
   const [auth, setAuth] = React.useState(false);
   const isAuth = useSelector(state => state.auth);
-
-  useEffect( ()  => {
-    console.log("company");
+  useEffect(() => {
     const tryLogin = async () => {
-      console.log('tryLogintryLogintryLogintryLogin')
       const userData = await AsyncStorage.getItem("userData");
-      console.log('444444444444444444444')
-      console.log(userData)
-
       if (!userData) {
-        console.log(11111111111111)
         setAuth(false);
       } else {
-        console.log(22222222222222)
-        setAuth(true);
+        const transformedData = JSON.parse(userData);
+        const { token, userId, expiryDate } = transformedData;
+        const expirationDate = new Date(expiryDate);
+        if (expirationDate <= new Date() || !token || !userId) {
+          setAuth(false);
+        } else {
+          const expirationTime =
+            expirationDate.getTime() - new Date().getTime();
+          setAuth(true);
+          dispatch(authActions.authenticate(userId, token, expirationTime));
+        }
       }
-      console.log('66666666666')
-    }
+    };
     tryLogin();
-    console.log('22222');
-    console.log(auth);
-    console.log('111111111');
-
   }, [isAuth]);
-
-  // const navigation = useNavigation();
-
-  const navRef = useRef();
-
 
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {/* <Stack.Screen
-          options={{ headerShown: false }}
-          name="StartupScreen"
-          component={StartupScreen}
-        /> */}
         {auth ? (
           <Stack.Screen
             options={{ headerShown: false }}
@@ -74,18 +50,15 @@ const NavigationContainer2 = props => {
             component={ShopDrawerNavigator}
           />
         ) : (
-            <Stack.Screen
-              options={{ headerShown: false }}
-              name="Auth"
-              component={AuthNavigator}
-            />
-          )}
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="Auth"
+            component={AuthNavigator}
+          />
+        )}
       </Stack.Navigator>
-
     </NavigationContainer>
-
   );
-
 };
 
 export default NavigationContainer2;

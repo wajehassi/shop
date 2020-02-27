@@ -54,6 +54,7 @@ return;
   }, [dispatch, loadProducts]);
 
   const selectItemHandler = (id, title) => {
+    // console.log(title);
     props.navigation.navigate('ProductDetail', {
       productId: id,
       productTitle: title
@@ -94,7 +95,7 @@ return;
       onRefresh={loadProducts}
       refreshing={isRefreshing}
       data={products}
-      keyExtractor={item => item.id}
+      keyExtractor={item => (item.id).toString()}
       renderItem={itemData => (
         <ProductItem
           image={itemData.item.imageUrl}
@@ -124,7 +125,7 @@ return;
   );
 };
 
-ProductsOverviewScreen.navigationOptions = navData => {
+ProductsOverviewScreen.setOptions = navData => {
   return {
     headerTitle: 'All Products',
     headerLeft: (

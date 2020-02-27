@@ -4,13 +4,12 @@ import { AsyncStorage } from 'react-native';
 // export const LOGIN = 'LOGIN';
 export const AUTHENTICATE = 'AUTHENTICATE';
 export const LOGOUT = 'LOGOUT';
-
+const BaseURL = 'http://demo10.optimal.ps/ecom/api' ;
 let timer;
 
 export const authenticate = (userId, token, expiryTime) => {
   return dispatch => {
     dispatch(setLogoutTimer(expiryTime));
-    console.log('authenticate+++');
     dispatch({ type: AUTHENTICATE, userId: userId, token: token });
   };
 };
@@ -18,7 +17,7 @@ export const authenticate = (userId, token, expiryTime) => {
 export const signup = (email, password) => {
   return async dispatch => {
     const response = await fetch(
-      'http://demo10.optimal.ps/mobile/api/register',
+      BaseURL+'/register',
       {
         method: 'POST',
         headers: {
@@ -65,7 +64,7 @@ export const signup = (email, password) => {
 export const login = (email, password) => {
   return async dispatch => {
     const response = await fetch(
-      'http://demo10.optimal.ps/ecom/api/auth/login',
+      BaseURL+'/auth/login',
       {
         method: 'POST',
         headers: {
