@@ -20,32 +20,19 @@ export const fetchProducts = () => {
 
       const resData = await response.json();
       const loadedProducts = [];
-// console.log(resData['products']['data']);
       const Data = resData['products']['data'];
-// console.log(Data);
 Data.forEach(element =>{
-
-      // for (const key in Data) {
-        // console.log(key);
         loadedProducts.push(
           new Product(
-            // key,
-            // resData[key].ownerId,
-            // resData[key].title,
-            // resData[key].imageUrl,
-            // resData[key].description,
-            // resData[key].price
             element.id,
             "u1" ,
             element.name ,
             'http://demo10.optimal.ps/ecom/storage/'+element.cover ,
             element.description ,
             parseFloat(element.price)
-
           )
         );
 } );
-      // }
       console.log(loadedProducts);
 
       dispatch({

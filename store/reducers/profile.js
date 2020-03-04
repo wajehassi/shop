@@ -1,5 +1,4 @@
 import { SET_USER } from '../actions/profile';
-// import Order from '../../models/order';
 
 const initialState = {
   user: []

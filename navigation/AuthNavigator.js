@@ -1,30 +1,21 @@
 import React from "react";
-import AuthScreen from "../screens/user/AuthScreen";
+import AuthScreen, {
+  screenOptions as authScreenOptions
+} from '../screens/user/AuthScreen';
 import { createStackNavigator } from "@react-navigation/stack";
 import Colors from "../constants/Colors";
+import defaultNavOptions from "../constants/defaultNavOptions";
 import { Platform } from "react-native";
 
-const defaultNavOptions = {
-  headerStyle: {
-    backgroundColor: Platform.OS === "android" ? Colors.primary : ""
-  },
-  headerTitleStyle: {
-    fontFamily: "open-sans-bold"
-  },
-  headerBackTitleStyle: {
-    fontFamily: "open-sans"
-  },
-  headerTintColor: Platform.OS === "android" ? "white" : Colors.primary
-};
 const Stack = createStackNavigator();
 
-function AuthNavigator(): React.ReactElement {
+const AuthNavigator = props => {
   return (
     <Stack.Navigator screenOptions={defaultNavOptions}>
       <Stack.Screen
         name="Auth"
         component={AuthScreen}
-        options={{ headerTitle: "Authenticate" }}
+        options={authScreenOptions}
       />
     </Stack.Navigator>
   );

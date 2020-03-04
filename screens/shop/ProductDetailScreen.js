@@ -16,11 +16,11 @@ const ProductDetailScreen = props => {
   // console.log(props.route.params['productId']);
   // console.log(props.route.params['productTitle']);
 
-  const productId = props.route.params['productId'];
-  const productTitle = props.route.params['productTitle'];
-  const productTitleTruncate = (productTitle) =>{ return( productTitle.length > 25 ?  productTitle.substring(0,25)+'...' : productTitle)};
+  const productId = props.route.params.productId;
+  // const productTitle = props.route.params['productTitle'];
+  // const productTitleTruncate = (productTitle) =>{ return( productTitle.length > 25 ?  productTitle.substring(0,25)+'...' : productTitle)};
 
-    props.navigation.setOptions({ headerTitle:productTitleTruncate(productTitle) });
+  //   props.navigation.setOptions({ headerTitle:productTitleTruncate(productTitle) });
   const selectedProduct = useSelector(state =>
     state.products.availableProducts.find(prod => prod.id === productId)
   );
@@ -44,9 +44,9 @@ const ProductDetailScreen = props => {
   );
 };
 
-ProductDetailScreen.setOptions = navData => {
+export const screenOptions = navData => {
   return {
-    headerTitle: navData.navigation.getParam('productTitle')
+    headerTitle: navData.route.params.productTitle
   };
 };
 

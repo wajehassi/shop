@@ -1,11 +1,17 @@
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage } from "react-native";
 
 // export const SIGNUP = 'SIGNUP';
 // export const LOGIN = 'LOGIN';
-export const AUTHENTICATE = 'AUTHENTICATE';
-export const LOGOUT = 'LOGOUT';
-const BaseURL = 'http://demo10.optimal.ps/ecom/api' ;
+export const AUTHENTICATE = "AUTHENTICATE";
+export const LOGOUT = "LOGOUT";
+export const SET_DID_TRY_AL = "SET_DID_TRY_AL";
+
+const BaseURL = "http://demo10.optimal.ps/ecom/api";
 let timer;
+
+export const setDidTryAL = () => {
+  return { type: SET_DID_TRY_AL };
+};
 
 export const authenticate = (userId, token, expiryTime) => {
   return dispatch => {
@@ -16,31 +22,27 @@ export const authenticate = (userId, token, expiryTime) => {
 
 export const signup = (email, password) => {
   return async dispatch => {
-    const response = await fetch(
-      BaseURL+'/register',
-      {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
+    const response = await fetch(BaseURL + "/register", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
 
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-          name : 'names',
-          returnSecureToken: true
-        })
-      }
-    );
-    
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+        name: "names",
+        returnSecureToken: true
+      })
+    });
 
     if (!response.ok) {
       const errorResData = await response.json();
       const errorId = errorResData.error.message;
-      let message = 'Something went wrong!';
-      if (errorId === 'EMAIL_EXISTS') {
-        message = 'This email exists already!';
+      let message = "Something went wrong!";
+      if (errorId === "EMAIL_EXISTS") {
+        message = "This email exists already!";
       }
       throw new Error(message);
     }
@@ -51,11 +53,12 @@ export const signup = (email, password) => {
       authenticate(
         resData.localId,
         resData.idToken,
-        parseInt(resData.expiresIn) * 1000
+              resData.expires_at 
+
       )
     );
     const expirationDate = new Date(
-      new Date().getTime() + parseInt(resData.expiresIn) * 1000
+                    resData.expires_at
     );
     saveDataToStorage(resData.idToken, resData.localId, expirationDate);
   };
@@ -63,53 +66,54 @@ export const signup = (email, password) => {
 
 export const login = (email, password) => {
   return async dispatch => {
-    const response = await fetch(
-      BaseURL+'/auth/login',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-          returnSecureToken: true
-        })
-      }
-    );
+    const response = await fetch(BaseURL + "/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+        returnSecureToken: true
+      })
+    });
 
     if (!response.ok) {
       const errorResData = await response.json();
-    //  const errorId = errorResData.error.message;
-    const errorId = errorResData.message;
-      let message = 'Something went wrong!';
-      if (errorId === 'EMAIL_NOT_FOUND') {
-        message = 'This email could not be found!';
-      } else if (errorId === 'INVALID_PASSWORD') {
-        message = 'This password is not valid!';
+      //  const errorId = errorResData.error.message;
+      const errorId = errorResData.message;
+      let message = "Something went wrong!";
+      if (errorId === "EMAIL_NOT_FOUND") {
+        message = "This email could not be found!";
+      } else if (errorId === "INVALID_PASSWORD") {
+        message = "This password is not valid!";
       }
       throw new Error(message);
     }
 
     const resData = await response.json();
-    console.log(resData);
+
     dispatch(
       authenticate(
         resData.localId,
         resData.idToken,
-        parseInt(resData.expiresIn) * 1000
+        // parseInt(resData.expiresIn) * 1000
+              resData.expires_at 
+
       )
     );
-    const expirationDate = new Date(
-      new Date().getTime() + parseInt(resData.expiresIn) * 1000
+      const expirationDate = new Date(
+      // new Date().getTime() + parseInt(resData.expiresIn) * 1000
+      resData.expires_at 
     );
-    saveDataToStorage(resData.idToken, resData.localId, expirationDate);
+  
+    saveDataToStorage(resData.idToken, resData.user.id, expirationDate);
   };
 };
 
 export const logout = () => {
   clearLogoutTimer();
-  AsyncStorage.removeItem('userData');
+  AsyncStorage.removeItem("userData");
   return { type: LOGOUT };
 };
 
@@ -129,7 +133,7 @@ const setLogoutTimer = expirationTime => {
 
 const saveDataToStorage = (token, userId, expirationDate) => {
   AsyncStorage.setItem(
-    'userData',
+    "userData",
     JSON.stringify({
       token: token,
       userId: userId,

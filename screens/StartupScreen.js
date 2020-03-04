@@ -1,30 +1,22 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 import {
   View,
   ActivityIndicator,
   StyleSheet,
   AsyncStorage
-} from 'react-native';
-import { useDispatch } from 'react-redux';
-import ShopDrawerNavigator from '../navigation/ShopDrawerNavigator';
-import AuthNavigator from '../navigation/AuthNavigator'
-import { NavigationContainer } from "@react-navigation/native";
-import Colors from '../constants/Colors';
-import * as authActions from '../store/actions/auth';
+} from "react-native";
+import { useDispatch } from "react-redux";
+import Colors from "../constants/Colors";
+import * as authActions from "../store/actions/auth";
 
 const StartupScreen = props => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const tryLogin = async () => {
-      const userData = await AsyncStorage.getItem('userData');
+      const tryLogin = async () => {
+      const userData = await AsyncStorage.getItem("userData");
       if (!userData) {
-  //        return (
-  //             <NavigationContainer>
-  //                     <AuthNavigator />
-  //             </NavigationContainer>
-  // );
-        props.navigation.navigate('Auth');
+        dispatch(authActions.setDidTryAL());
         return;
       }
       const transformedData = JSON.parse(userData);
@@ -32,22 +24,11 @@ const StartupScreen = props => {
       const expirationDate = new Date(expiryDate);
 
       if (expirationDate <= new Date() || !token || !userId) {
-        props.navigation.navigate('Auth');
+        dispatch(authActions.setDidTryAL());
         return;
-              //    return (
-              // <NavigationContainer>
-              //         <AuthNavigator />
-              // </NavigationContainer>
-  // );
       }
 
       const expirationTime = expirationDate.getTime() - new Date().getTime();
-  //        return (
-  //             <NavigationContainer>
-  //                     <ShopDrawerNavigator />
-  //             </NavigationContainer>
-  // );
-      props.navigation.navigate('Shop');
       dispatch(authActions.authenticate(userId, token, expirationTime));
     };
     tryLogin();
@@ -63,8 +44,8 @@ const StartupScreen = props => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: "center",
+    alignItems: "center"
   }
 });
 

@@ -1,15 +1,12 @@
+import React, { ReactElement } from "react";
 import {
   DrawerItem,
   DrawerItemList,
   createDrawerNavigator
 } from "@react-navigation/drawer";
-import { Ionicons } from '@expo/vector-icons';
-import { HeaderButtons, Item } from 'react-navigation-header-buttons';
-import HeaderButton from '../components/UI/HeaderButton';
-
+import { Ionicons } from "@expo/vector-icons";
 import { Platform, Button, View } from "react-native";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import React, { ReactElement } from "react";
+import {  SafeAreaView } from "react-native-safe-area-context";
 import OrdersNavigatorStack from "./OrdersNavigator";
 import ProductsNavigatorStack from "./ProductsNavigator";
 import AdminNavigatorStack from "./AdminNavigator";
@@ -20,7 +17,7 @@ import { useDispatch } from "react-redux";
 
 const Drawer = createDrawerNavigator();
 
-function ShopDrawerNavigator(): ReactElement {
+const ShopDrawerNavigator = () => {
   const dispatch = useDispatch();
 
   return (
@@ -49,11 +46,11 @@ function ShopDrawerNavigator(): ReactElement {
         name="Products"
         component={ProductsNavigatorStack}
         options={{
-          drawerIcon: drawerConfig => (
+          drawerIcon: props => (
             <Ionicons
               name={Platform.OS === "android" ? "md-cart" : "ios-cart"}
               size={23}
-              color={drawerConfig.tintColor}
+              color={props.color}
             />
           )
         }}
@@ -62,24 +59,12 @@ function ShopDrawerNavigator(): ReactElement {
         name="Orders"
         component={OrdersNavigatorStack}
         options={{
-          drawerIcon: drawerConfig => (
+          drawerIcon: props => (
             <Ionicons
               name={Platform.OS === "android" ? "md-list" : "ios-list"}
               size={23}
-              color={drawerConfig.tintColor}
+              color={props.color}
             />
-          ) ,
-          headerTitle: 'Your Orders',
-          headerLeft: (
-            <HeaderButtons HeaderButtonComponent={HeaderButton}>
-              <Item
-                title="Menu"
-                iconName={Platform.OS === 'android' ? 'md-menu' : 'ios-menu'}
-                onPress={() => {
-                  navData.navigation.toggleDrawer();
-                }}
-              />
-            </HeaderButtons>
           )
         }}
       />
@@ -87,11 +72,11 @@ function ShopDrawerNavigator(): ReactElement {
         name="Admin"
         component={AdminNavigatorStack}
         options={{
-          drawerIcon: drawerConfig => (
+          drawerIcon: props => (
             <Ionicons
               name={Platform.OS === "android" ? "md-create" : "ios-create"}
               size={23}
-              color={drawerConfig.tintColor}
+              color={props.color}
             />
           )
         }}
@@ -100,17 +85,17 @@ function ShopDrawerNavigator(): ReactElement {
         name="Profile"
         component={ProfileNavigatorStack}
         options={{
-          drawerIcon: drawerConfig => (
+          drawerIcon: props => (
             <Ionicons
               name={Platform.OS === "android" ? "md-create" : "ios-create"}
               size={23}
-              color={drawerConfig.tintColor}
+              color={props.color}
             />
           )
         }}
       />
     </Drawer.Navigator>
   );
-}
+};
 
 export default ShopDrawerNavigator;

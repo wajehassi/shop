@@ -74,12 +74,12 @@ const ProfileScreen = props => {
   return (
     <ScrollView>
       <View style={styles.centered}>
-        <Text>{userData.id ? userData.id : '-'}</Text>
-        <Text>{userData.name ? userData.name : '-'}</Text>
-        <Text>{userData.email ? userData.email : '-'}</Text>
-        <Text>{userData.status ? userData.status : '-'}</Text>
-        <Text>{userData.date_of_birth ? userData.date_of_birth : '-'}</Text>
-        <Text>{userData.email ? userData.cover : '-'}</Text>
+        <Text>{userData.User.id ? userData.User.id : '-'}</Text>
+        <Text>{userData.User.name ? userData.User.name : '-'}</Text>
+        <Text>{userData.User.email ? userData.User.email : '-'}</Text>
+        <Text>{userData.User.status ? userData.User.status : '-'}</Text>
+        <Text>{userData.User.date_of_birth ? userData.User.date_of_birth : '-'}</Text>
+        <Text>{userData.User.email ? userData.User.cover : '-'}</Text>
       </View>
     </ScrollView>
   );
