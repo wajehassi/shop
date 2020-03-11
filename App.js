@@ -10,6 +10,8 @@ import cartReducer from './store/reducers/cart';
 import ordersReducer from './store/reducers/orders';
 import authReducer from './store/reducers/auth';
 import profileReducer from './store/reducers/profile';
+import categoriesReducer from './store/reducers/categories';
+
 import AppNavigator from './navigation/AppNavigator';
 
 const rootReducer = combineReducers({
@@ -17,7 +19,8 @@ const rootReducer = combineReducers({
   cart: cartReducer,
   orders: ordersReducer,
   auth: authReducer,
-  profile:profileReducer
+  profile:profileReducer ,
+  categories:categoriesReducer
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));

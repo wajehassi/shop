@@ -1,16 +1,13 @@
 import React from "react";
 import MainScreen, {
   screenOptions as MainScreenOptions
-} from "../screens/shop/MainScreen";
+} from '../screens/shop/MainScreen';
 import ProductDetailScreen, {
   screenOptions as productDetailScreenOptions
-} from "../screens/shop/ProductDetailScreen";
+} from '../screens/shop/ProductDetailScreen';
 import CartScreen, {
   screenOptions as cartScreenOptions
-} from "../screens/shop/CartScreen";
-import CategoryScreen, {
-  screenOptions as categoryScreenOptions
-} from "../screens/shop/CategoryScreen.js";
+} from '../screens/shop/CartScreen';
 import { createStackNavigator } from "@react-navigation/stack";
 import Colors from "../constants/Colors";
 import { Platform } from "react-native";
@@ -37,11 +34,6 @@ const ProductsNavigator = props => {
         name="ProductsOverview"
         component={MainScreen}
         options={MainScreenOptions}
-      />
-      <Stack.Screen
-        name="CategoryDetail"
-        component={CategoryScreen}
-        options={categoryScreenOptions}
       />
       <Stack.Screen
         name="ProductDetail"

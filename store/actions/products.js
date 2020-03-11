@@ -4,6 +4,8 @@ export const DELETE_PRODUCT = 'DELETE_PRODUCT';
 export const CREATE_PRODUCT = 'CREATE_PRODUCT';
 export const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
 export const SET_PRODUCTS = 'SET_PRODUCTS';
+const BaseURL = 'http://demo10.optimal.ps/ecom/api' ;
+const StorageURL = 'http://demo10.optimal.ps/ecom/storage/' ;
 
 export const fetchProducts = () => {
   return async (dispatch, getState) => {
@@ -11,7 +13,7 @@ export const fetchProducts = () => {
     const userId = getState().auth.userId;
     try {
       const response = await fetch(
-        'http://demo10.optimal.ps/ecom/api/product'
+        BaseURL+'/product'
       );
 
       if (!response.ok) {
@@ -25,16 +27,15 @@ Data.forEach(element =>{
         loadedProducts.push(
           new Product(
             element.id,
-            "u1" ,
+            // "u1" ,
             element.name ,
-            'http://demo10.optimal.ps/ecom/storage/'+element.cover ,
+            StorageURL+element.cover ,
             element.description ,
             parseFloat(element.price)
           )
         );
 } );
-      console.log(loadedProducts);
-
+// console.log(loadedProducts);
       dispatch({
         type: SET_PRODUCTS,
         products: loadedProducts,

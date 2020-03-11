@@ -22,7 +22,7 @@ const ProductDetailScreen = props => {
 
   //   props.navigation.setOptions({ headerTitle:productTitleTruncate(productTitle) });
   const selectedProduct = useSelector(state =>
-    state.products.availableProducts.find(prod => prod.id === productId)
+    state.categories.categoryProducts.find(prod => prod.id === productId)
   );
   const dispatch = useDispatch();
 

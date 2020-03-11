@@ -27,3 +27,35 @@ export const fetchUser = () => {
     }
   };
 };
+
+export const updateProfile = (name, email, password) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    
+    const response = await fetch(
+        BaseURL+`/editProfile` ,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Access-Token' : 'Bearer'+' '+token
+        },
+      body: JSON.stringify({
+        name: name,
+        email: email,
+        password: password,
+      })
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error('Something went wrong!');
+    }
+      const resData = await response.json();
+
+    dispatch({
+      type: SET_USER,
+      user: resData,
+    });
+  };
+};
